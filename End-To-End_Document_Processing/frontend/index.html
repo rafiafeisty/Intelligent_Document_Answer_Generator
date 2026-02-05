@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Document Assistant</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-file-lines"></i> Document Assistant</h1>
+            <p class="subtitle">Upload PDFs and chat with your documents</p>
+        </header>
+
+        <div class="dashboard">
+            <!-- Left: Upload / Knowledge base -->
+            <div class="panel upload-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-upload"></i> Add Documents</h2>
+                    <div class="status-indicator" id="upload-status">
+                        <span class="status-text">Ready</span>
+                        <span class="status-dot ready"></span>
+                    </div>
+                </div>
+
+                <div class="instructions">
+                    <p><i class="fas fa-info-circle"></i> Upload your PDF documents to build a searchable knowledge base.</p>
+                </div>
+
+                <div class="upload-area" id="drop-area">
+                    <i class="fas fa-cloud-arrow-up upload-icon"></i>
+                    <p>Drag & drop PDFs here<br>or click to select files</p>
+                    <input type="file" id="files" accept=".pdf" multiple hidden>
+                    <button class="btn btn-primary" onclick="document.getElementById('files').click()">
+                        <i class="fas fa-folder"></i> Choose Files
+                    </button>
+                    <p class="file-info" id="file-info">No files selected</p>
+                </div>
+
+                <div class="upload-controls">
+                    <button class="btn btn-primary" id="upload-btn" onclick="uploadDocs()">
+                        <i class="fas fa-upload"></i> Process Documents
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearFiles()">
+                        <i class="fas fa-trash-can"></i> Clear
+                    </button>
+                </div>
+
+                <div class="progress-container" id="upload-progress" style="display:none;">
+                    <div class="progress-header">
+                        <span>Processing documents…</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-details" id="progress-details">Preparing files…</div>
+                </div>
+
+                <div class="stats-container" id="stats-container" style="display:none;">
+                    <h3><i class="fas fa-chart-bar"></i> Document Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card"><div class="stat-value" id="stat-docs">0</div><div class="stat-label">Documents</div></div>
+                        <div class="stat-card"><div class="stat-value" id="stat-pages">0</div><div class="stat-label">Total Pages</div></div>
+                        <div class="stat-card"><div class="stat-value" id="stat-sentences">0</div><div class="stat-label">Sentences</div></div>
+                        <div class="stat-card"><div class="stat-value" id="stat-ready">No</div><div class="stat-label">Ready</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Chat interface -->
+            <div class="panel chat-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-comment-dots"></i> Chat with Documents</h2>
+                    <div class="status-indicator" id="query-status">
+                        <span class="status-text">Waiting for documents</span>
+                        <span class="status-dot waiting"></span>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message system">
+                        <div class="message-content">
+                            Hello! Upload some PDF documents and start asking questions about their content.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message loading hidden" id="loading-message">
+                    <div class="message-content">
+                        <div class="typing-indicator">
+                            <span></span><span></span><span></span>
+                        </div>
+                        Thinking...
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <textarea id="question" placeholder="Ask anything about the documents..." rows="3"></textarea>
+                    <div class="query-controls">
+                        <button class="btn btn-primary" id="ask-btn" onclick="ask()">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearQuestion()">
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="progress-container slim hidden" id="query-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="query-progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Document RAG Assistant • Powered by sentence-transformers & Mistral</p>
+        </footer>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
